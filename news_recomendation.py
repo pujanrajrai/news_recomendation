@@ -3,11 +3,11 @@ from scipy import sparse
 
 ratings = pd.read_csv('dataset/ratings.csv')
 news = pd.read_csv('dataset/news.csv')
-ratings = pd.merge(news, ratings).drop(['genres', 'timestamp'], axis=1)
+ratings = pd.merge(news, ratings).drop(['categories', 'timestamp'], axis=1)
 print(ratings.shape)
 ratings.head()
 
-userRatings = ratings.pivot_table(index=['userId'], columns=['title'], values='rating')
+userRatings = ratings.pivot_table(index=['userid'], columns=['News Title'], values='rating')
 userRatings.head()
 print("Before: ", userRatings.shape)
 userRatings = userRatings.dropna(thresh=10, axis=1).fillna(0, axis=1)
@@ -24,20 +24,24 @@ def get_similar(movie_name, rating):
     return similar_ratings
 
 
-romantic_lover = [("(500) Days of Summer (2009)", 5), ("Alice in Wonderland (2010)", 3), ("Aliens (1986)", 1),
-                  ("2001: A Space Odyssey (1968)", 2)]
+college_student = [("Not so fast with the time for unity calls, say Bates scholars", 5),
+                   ("Quotable quotes, and what they mean, from MLK Day at Bates in 2021", 3),
+                   ("Bates photographers favorite images of an unfavorable 2020", 1),
+                   ("30 years ago: Gulf War, Angela Davis, and a memorable night", 2)]
 similar_news = pd.DataFrame()
-for movie, rating in romantic_lover:
+for movie, rating in college_student:
     similar_news = similar_news.append(get_similar(movie, rating), ignore_index=True)
 
 similar_news.head(10)
 
 similar_news.sum().sort_values(ascending=False).head(20)
 
-action_lover = [("Amazing Spider-Man, The (2012)", 5), ("Mission: Impossible III (2006)", 4), ("Toy Story 3 (2010)", 2),
-                ("2 Fast 2 Furious (Fast and the Furious 2, The) (2003)", 4)]
+politics_lover = [("Perhaps We Should Regulate Deranged Billionaires Like Elon Musk", 5),
+                  ("What Bidens Agenda Can Mean for Oppressed Uighurs", 4),
+                  ("Joe Bidens Steps Toward Ending Saudi Arabias War on Yemen Are Tentatively Hopeful", 2),
+                  ("Kp oli speech battle with prachanda", 4)]
 similar_news = pd.DataFrame()
-for movie, rating in action_lover:
+for movie, rating in politics_lover:
     similar_news = similar_news.append(get_similar(movie, rating), ignore_index=True)
 
 similar_news = similar_news.sum().sort_values(ascending=False).head(10)

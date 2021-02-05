@@ -31,7 +31,7 @@ def get_similar(movie_name, rating):
     return similar_score
 
 
-action_lover = [("action1", 5), ("romantic2", 1), ("romantic3", 1)]
+action_lover = [("politics1", 5), ("sports2", 1), ("sports3", 1)]
 similar_scores = pd.DataFrame()
 for news, rating in action_lover:
     similar_scores = similar_scores.append(get_similar(news, rating), ignore_index=True)
